@@ -22,9 +22,11 @@ export default class extends React.Component{
     } } = await axios.get(
       `http://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${API_KEY}&units=metric`
     );
+
     this.setState({
       isLoading: false,
       condition: weather[0].main,
+      description: weather[0].description,
       temp
     });
   }
@@ -38,8 +40,6 @@ export default class extends React.Component{
       console.log(latitude, longitude);
 
       this.getWeather(latitude, longitude);
-
-      this.setState({ isLoading: false });
     } catch(error) {
       Alert.alert("So Sad.", "위치를 찾을 수 없습니다.");
     }
@@ -49,7 +49,7 @@ export default class extends React.Component{
   }
 
   render() {
-    const { isLoading, temp, condition } = this.state;
-    return isLoading ? <Loading /> : <Weather temp={Math.round(temp)} condition={condition} />;
+    const { isLoading, condition, description, temp } = this.state;
+    return isLoading ? <Loading /> : <Weather temp={Math.round(temp)} condition={condition} description={description} />;
   }
 }
